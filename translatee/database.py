@@ -1,6 +1,5 @@
 import sqlite3
 
-
 def init_db():
     conn = sqlite3.connect('users.db')
     c = conn.cursor()
@@ -13,21 +12,8 @@ def init_db():
         )
     ''')
     
-
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS translations (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER,
-            original_text TEXT,
-            translated_text TEXT,
-            lang_code TEXT,
-            FOREIGN KEY(user_id) REFERENCES users(user_id)
-        )
-    ''')
-    
     conn.commit()
     conn.close()
-
 
 def add_user(user_id: int, username: str, full_name: str):
     conn = sqlite3.connect('users.db')
@@ -39,13 +25,10 @@ def add_user(user_id: int, username: str, full_name: str):
     conn.commit()
     conn.close()
 
-
-def add_translation(user_id: int, original_text: str, translated_text: str, lang_code: str):
+def get_all_users():
     conn = sqlite3.connect('users.db')
     c = conn.cursor()
-    c.execute('''
-        INSERT INTO translations (user_id, original_text, translated_text, lang_code)
-        VALUES (?, ?, ?, ?)
-    ''', (user_id, original_text, translated_text, lang_code))
-    conn.commit()
+    c.execute('SELECT * FROM users')
+    users = c.fetchall()
     conn.close()
+    return users

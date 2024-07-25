@@ -28,9 +28,3 @@ def get_language_keyboard(page: int = 1):
     return keyboard
 
 
-
-def admin_keyboard():
-    keyboard = InlineKeyboardMarkup()
-    keyboard.add(InlineKeyboardButton("Users", callback_data='users'))
-    keyboard.add(InlineKeyboardButton("Bot Statistics", callback_data='statistics'))
-    return keyboard
