@@ -8,6 +8,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from database import init_db, add_user, get_all_users
 from buttons.inline import get_language_keyboard, languages_dict
+from state import *
 
 API_TOKEN = '7231442870:AAGfupxHgK6-_YnhklkZh_lMIAgLi5ixCn0'
 API_URL = 'https://cvt.su/x/translator/?from=auto&to={}&text={}'
@@ -21,8 +22,6 @@ dp.middleware.setup(LoggingMiddleware())
 
 ADMIN_PASSWORD = '08080'
 
-class AdminState(StatesGroup):
-    waiting_for_password = State()
 
 async def translate_text(text: str, to_lang: str) -> str:
     url = API_URL.format(to_lang, text)
@@ -55,7 +54,7 @@ async def password_handler(message: types.Message, state: FSMContext):
     if message.text == ADMIN_PASSWORD:
         users_button = InlineKeyboardButton("Users", callback_data="list_users")
         keyboard = InlineKeyboardMarkup().add(users_button)
-        await message.answer("Xush kelibsiz admin!", reply_markup=keyboard)
+        await message.answer("Assalomu aleyko'm <b>Mutalov Nuriddin</b> Xush kelibsiz!", reply_markup=keyboard)
     else:
         await message.answer("Noto'g'ri parol!")
     await state.finish()
@@ -63,9 +62,9 @@ async def password_handler(message: types.Message, state: FSMContext):
 @dp.callback_query_handler(lambda c: c.data == "list_users")
 async def list_users_handler(callback_query: types.CallbackQuery):
     users = get_all_users()
-    users_list = "\n".join([f"{user[2]} (@{user[1]})" for user in users])
+    users_list = "\n".join([f"{user[2]}  @{user[1]}" for user in users])
     if users_list:
-        await bot.send_message(callback_query.from_user.id, f"Botdan foydalanayotgan foydalanuvchilar:\n\n{users_list}")
+        await bot.send_message(callback_query.from_user.id, f"Bot foydalanuvchilar:\n\n{users_list}")
     else:
         await bot.send_message(callback_query.from_user.id, "Hech qanday foydalanuvchi yo'q.")
     await bot.answer_callback_query(callback_query.id)
