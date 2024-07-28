@@ -1,11 +1,11 @@
 import logging
 import aiohttp
 from aiogram import Bot, Dispatcher, types, executor
-from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.state import State, StatesGroup
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from gtts import gTTS, lang
+from io import BytesIO
 from database import init_db, add_user, get_all_users
 from buttons.inline import get_language_keyboard, languages_dict
 from state import *
@@ -18,7 +18,6 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN, parse_mode=types.ParseMode.HTML)
 storage = MemoryStorage()
 dp = Dispatcher(bot=bot, storage=storage)
-dp.middleware.setup(LoggingMiddleware())
 
 ADMIN_PASSWORD = '08080'
 
@@ -32,6 +31,16 @@ async def translate_text(text: str, to_lang: str) -> str:
                 return data.get('result', 'Translation failed')
             else:
                 return 'API request failed'
+
+async def text_to_speech(text: str, lang_code: str) -> BytesIO:
+    tts = gTTS(text=text, lang=lang_code)
+    audio = BytesIO()
+    tts.write_to_fp(audio)
+    audio.seek(0)
+    return audio
+
+async def supports_audio(lang_code: str) -> bool:
+    return lang_code in lang.tts_langs()
 
 @dp.message_handler(commands=["start"])
 async def start_handler(message: types.Message):
@@ -74,7 +83,23 @@ async def handle_message(message: types.Message):
     text = message.text
     lang_code = 'uz'
     translated_text = await translate_text(text, lang_code)
-    await message.answer(f"<code>{translated_text}</code>", parse_mode='HTML', reply_markup=get_language_keyboard(1))
+    
+    keyboard = get_language_keyboard(1)
+    if await supports_audio(lang_code):
+        audio_button = InlineKeyboardButton("Audio", callback_data=f"audio_{translated_text}_{lang_code}")
+        keyboard.add(audio_button)
+
+    await message.answer(f"<code>{translated_text}</code>", parse_mode='HTML', reply_markup=keyboard)
+
+@dp.callback_query_handler(lambda c: c.data.startswith('audio_'))
+async def handle_audio(callback_query: CallbackQuery):
+    data = callback_query.data.split('_')
+    translated_text = data[1]
+    lang_code = data[2]
+    audio = await text_to_speech(translated_text, lang_code)
+    
+    await bot.send_audio(callback_query.message.chat.id, audio, title='Translation')
+    await bot.answer_callback_query(callback_query.id)
 
 @dp.callback_query_handler(lambda c: c.data.startswith('page_'))
 async def handle_pagination(callback_query: types.CallbackQuery):
@@ -87,7 +112,13 @@ async def translate_text_handler(call: types.CallbackQuery):
     lang_code = call.data
     text = call.message.text
     translated_text = await translate_text(text, lang_code)
-    await call.message.edit_text(f"<code>{translated_text}</code>", parse_mode='HTML', reply_markup=get_language_keyboard(1))
+    
+    keyboard = get_language_keyboard(1)
+    if await supports_audio(lang_code):
+        audio_button = InlineKeyboardButton("Audio", callback_data=f"audio_{translated_text}_{lang_code}")
+        keyboard.add(audio_button)
+
+    await call.message.edit_text(f"<code>{translated_text}</code>", parse_mode='HTML', reply_markup=keyboard)
     await bot.answer_callback_query(call.id)
 
 async def on_start_up(dp):

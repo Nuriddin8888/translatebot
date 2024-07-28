@@ -5,7 +5,15 @@ languages_dict = {
     'de': "GER 🇩🇪", 'es': "ISP 🇪🇸", 'ar': "BAA 🇦🇪", 'tg': "TOJ 🇭🇺", 'ja': "JP 🇯🇵", 
     'kn': "CA 🇨🇦", 'tr': "TR 🇹🇷", 'fr': "FR 🇫🇷", 'it': "IT 🇮🇹", 'kk': "KZ 🇰🇿",
     'ky': "KG 🇰🇬", 'mn': "MN 🇲🇳", 'ne': "NP 🇳🇵", 'fa': "FA 🇮🇷", 'el': "GR 🇬🇷",
-    'hi': "IN 🇮🇳", 'is': "IS 🇮🇸", 'id': "ID 🇮🇩", 'lv': "LV 🇱🇻", 'mk': "MK 🇲🇰"
+    'hi': "IN 🇮🇳", 'is': "IS 🇮🇸", 'id': "ID 🇮🇩", 'lv': "LV 🇱🇻", 'm': "AZ 🇦🇿",
+    'be': "BY 🇧🇾", 'bs': "BA 🇧🇦", 'bg': "BG 🇧🇬", 'ny': "MW 🇲🇼", 'k': "MK 🇲🇰",
+    'af': "CF 🇨🇫", 'sq': "AL 🇦🇱", 'am': "ET 🇪🇹", 'hy': "AM 🇦🇲", 'azcs': "CZ 🇨🇿",
+    'da': "DK 🇩🇰", 'nl': "NL 🇳🇱", 'et': "ET 🇪🇪", 'tl': "PH 🇵🇭", 'fi': "FI 🇫🇮",
+    'ka': "GE 🇬🇪", 'el': "GR 🇬🇷", 'hu': "HU 🇭🇺", 'ga': "IE 🇮🇪", 'lo': "LA 🇱🇦",
+    'lt': "LT 🇱🇹", 'lb': "LU 🇱🇺", 'no': "NO 🇳🇴", 'pt': "PT 🇵🇹", 'ro': "RO 🇷🇴",
+    'sm': "SM 🇼🇸", 'sr': "RS 🇷🇸", 'sk': "SK 🇸🇰", 'sl': "SI 🇸🇮", 'so': "SO 🇸🇴",
+    'sv': "SE 🇸🇪", 'th': "TH 🇹🇭", 'uk': "UA 🇺🇦", 'vi': "VN 🇻🇳", 'sy': "SY 🏴󠁧󠁢󠁷󠁬󠁳󠁿",
+    'zu': "ZU 🇱🇹"
 }
 
 
