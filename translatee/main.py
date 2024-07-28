@@ -50,7 +50,7 @@ async def start_handler(message: types.Message):
     
     add_user(user_id, username, full_name)
     
-    await message.answer(f"Salom hurmatli <b>{full_name}</b> 👋\n\nTarjimon botimizga xushkelibsiz.\nBotimizdan bemalol foydalanishingiz mumkin!!!")
+    await message.answer(f"Salom hurmatli <b>{full_name}</b> 👋\n\nTarjimon botimizga xushkelibsiz.\nBotimizda <b>61 dan ortiq</b> tillar mavjud ✅\nTarjima qilingan matn va audio formatlardadaham olishingiz mumkin 🔊\nBotimizdan bemalol foydalaning ✍️!!!")
     await message.answer("Tarjima qilishingiz kerak bo'lgan matningizni kiriting 👇")
 
 @dp.message_handler(commands=["admin"])
