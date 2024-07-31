@@ -17,14 +17,14 @@ languages_dict = {
 }
 
 
-def get_language_keyboard(page: int = 1):
-    languages_per_page = 6
+def get_language_keyboard(page: int = 2):
+    languages_per_page = 10
     language_keys = list(languages_dict.keys())
     start = (page - 1) * languages_per_page
     end = start + languages_per_page
     buttons = [InlineKeyboardButton(f"{languages_dict[code]}", callback_data=code) for code in language_keys[start:end]]
     
-    keyboard = InlineKeyboardMarkup(row_width=3)
+    keyboard = InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
     
 
