@@ -18,7 +18,7 @@ languages_dict = {
 
 
 def get_language_keyboard(page: int = 2):
-    languages_per_page = 10
+    languages_per_page = 12
     language_keys = list(languages_dict.keys())
     start = (page - 1) * languages_per_page
     end = start + languages_per_page
